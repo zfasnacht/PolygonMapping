@@ -1,0 +1,29 @@
+This Readme describes the python function make_map which can be imported from map_script.py (ie from map_script import make_map)
+
+make_map(data,lon_corners,lat_corners,geo_bounds,cbar_bounds,cbar_type,cbar_label,fig_name)
+
+	data: array or scalar 
+		The data for the mapping function to plot in colors on map 
+	lon_corners: ndarray Multiple Pologons -> SHAPE(num corners * num polygons) Single polygon -> SHAPE(num corners)
+		The longitude corners for polygons user would like plotted
+	lat_corners: ndarray Multiple Pologons -> SHAPE(num corners * num polygons) Single polygon -> SHAPE(num corners)
+		The latitude corners for polygons user would like plotted
+	geo_bounds: array (lon_min,lon_max,lat_min,lat_max), optional	
+		The longitude and latitude bounds user would like for plot
+		Default is (-180,180,-90,90)
+	cbar_bounds: array (min,max,num steps), optional
+		The colorbar bounds and number of increments user would like in colorbar
+		Default is (10th percentile, 90th percentile, 10 steps)
+	cbar_type: list or string, optional 
+		The type of colorbar user would like, ie continuous or discrete. User can also input list of personal colorbar. 
+		Optional colorbar type arguments are as followed:
+			'continuous' -> plt.cm.jet colorbar...rainbow like colorbar
+			'discrete' -> Dark Blue to cyan colorbar
+			[colora,colorb,colorc] Ex. ['blue','orange','red'] will create a colorbar where blue is min value on colorbar, orange is middle range color, and red is max range color, 
+			    			   code will "smear" colors between the given colors to give full colorbar for colorbar range and steps provided by user	
+		Default: continuous 
+	cbar_label: string, optional 
+		Label User would like to use for colorbar
+		Default: ''		
+	fig_name: string
+		Filename user would like to save map as including file extension 

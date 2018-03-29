@@ -1,0 +1,39 @@
+This Readme describes the python driver map_driver.py which uses the function make_map to plot polygons on map for user chosen data
+
+Command line script to run:
+	
+	python map_driver.py -fname -pname -dfield -outfile -geobounds -cbarbounds -cbartype
+
+	Required Arguments:
+		-fname   or --fname   The name of the data file for which user would like data to be plotted
+			Example -fname OMI-Aura_L2-OMTO3_2006m0513t2104-o09722_v999-2017m0201t175858.he5
+
+		-pname   or --pname   The name of the PIXCOR file that user would like data to be plotted with 
+			Example -pname OMI-Aura_L2-OMPIXCOR_2006m0921t1953-o11629_v003-2018m0228t230824.he5
+
+		-dfield  or --dfield  The datafield that the user would like plotted for given filename. User can input just datafield or datafield and full path including groups (including
+				      the full path is safer way of using in case that the datafield is in multiple groups, otherwise datafield may be taken from wrong group)
+			Example -dfield /HDFEOS/SWATHS/OMI Column Amount O3/Data Fields/Reflectivity340
+
+		-outfile or --outfile The name of the output file that user would like for plot with extension included 
+			Example -outfile 2006m0513_o11629_R340.jpg
+	
+	Optional Arguments:
+		
+		-geobounds  or --geobounds  List of lat/lon bounds user would like map to be created with (lon_min,lon_max,lat_min,lat_max)
+			Default is [-180,180,-90,90]
+			Example [30,100,-60,60] will make a map from 30E-100E Longitude and 60S-60N Latitude
+
+		-cbarbounds or --cbarbounds List of colorbar bounds user would like plot to use (cbar_min,cbar_max,number of steps)
+			Default is [10th percentile, 90th percentile, 10 steps]
+			Example [1,5,5] will map a colorbar where the min value is 1, max value is 5, and there are 5 increments 
+
+		-cbartype   or --cbartype   Type of colorbar user would like: continuous, discrete, or list for custom colorbar. 
+			Optional colorbar type arguments are as followed:
+			'continuous' -> plt.cm.jet colorbar...rainbow like colorbar
+			'discrete' -> Dark Blue to cyan colorbar
+			[colora,colorb,colorc] Example ['blue','orange','red'] will create a colorbar where blue is min value on colorbar, orange is middle range color, and red is max range color, 
+			    			       code will "smear" colors between the given colors to give full colorbar for colorbar range and steps provided by user	
+			Default: continuous 
+		
+
