@@ -39,7 +39,10 @@ def make_colormap(lower,upper,step,types):
 			STOP
 	cmaplist = [cmap(i) for i in range(cmap.N)]
 	cmap = cmap.from_list('Custom cmap', cmaplist, cmap.N)
-	bounds = np.linspace(lower,upper,step)
+	if (np.abs(lower) < 5.) & (np.abs(upper) < 5.):
+		bounds = np.linspace(np.round(lower,2),np.round(upper,2),step)
+	else:
+		bounds = np.linspace(lower,upper,step)
 
 	norm = mpl.colors.BoundaryNorm(bounds, cmap.N)
 	return norm, cmap,bounds
@@ -67,23 +70,23 @@ def plot_poly(lon_corner,lat_corner,data,axes,cmap,norm):
 				
 #Main function for creating polygons on map
 def make_map(data,lat_corner,lon_corner,fig_name,geo_bounds=[-180,180,-90,90],cbar_bounds=[],cbar_type='continuous',cbar_label=''):
-
+	
 	#Checking if colorbar bounds exist and creating colorbar bounds if they are no given as input. Default color bar used the 
 	#10th percentile of data for the cbar min, 90th percentile for cbar max, and assumes 10 incremental steps in the colorbar.
 	#If only one data point was given as input a colorbar is made with a range +/- 10% of that data point (planning to change to solid color). 
-	if (len(cbar_bounds) == 0) & (isinstance(data,(list, np.ndarray))):
-		cbar_min = int(np.nanpercentile(data, 10))
-		cbar_max = int(np.nanpercentile(data, 90))
+	if (not cbar_bounds) & (isinstance(data,(list, np.ndarray))):
+		cbar_min = (np.nanpercentile(data, 10))
+		cbar_max = (np.nanpercentile(data, 90))
 		cbar_bounds = [cbar_min,cbar_max,11]
-	else:
+	elif (not colorbar_bounds) & (~isinstance(data,(list, np.ndarray))):
 		cbar_min = data - (data * 0.1)
 		cbar_max = data + (data * 0.1)
 		cbar_bounds = [cbar_min,cbar_max,11]
-
+	print np.shape(data)
 	#If a single scalar data point is given for plotted it is converted into a list since code loops through polygons 
-	if ~isinstance(data,(list, np.ndarray)):
+	if not isinstance(data,(list, np.ndarray)):
 		data = np.array([data])
-	
+	print np.shape(data)
 	#If a single vector of one polygon is given the corners are converted to 2d arrays (corners,1) so that code can 
 	#loop through polygons 
 	if len(np.shape(lat_corner)) ==1:
@@ -98,7 +101,7 @@ def make_map(data,lat_corner,lon_corner,fig_name,geo_bounds=[-180,180,-90,90],cb
 		data = np.array(data).flatten()
 		lat_corner = np.array(lat_corner).reshape(len(lat_corner[:,0,0]),data_len)
 		lon_corner = np.array(lon_corner).reshape(len(lon_corner[:,0,0]),data_len)
-	
+	print np.shape(data)
 	#Creating a blank map for mapping polygons
 	fig, axes = create_map()
 	
@@ -106,9 +109,11 @@ def make_map(data,lat_corner,lon_corner,fig_name,geo_bounds=[-180,180,-90,90],cb
 	axes.set_extent(geo_bounds)
 
 	#Setting the bounds of the colorbar
+	print cbar_bounds[0],cbar_bounds[1],cbar_bounds[2]+1
 	norm, cmap,bounds = make_colormap(cbar_bounds[0],cbar_bounds[1],cbar_bounds[2]+1,cbar_type)
 
 	#Looping through polygons and plotting them on map
+	print np.shape(data)
 	for i in range(len(data[:])):
 	
 		#As we loop through the polygons the code checks to make sure the polygons do not stretch across the globe (ie polygon stretches 
