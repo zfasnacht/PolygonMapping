@@ -5,15 +5,14 @@ Command line script to run:
 	python map_driver.py -fname -pname -dfield -outfile -geobounds -cbarbounds -cbartype
 
 	Required Arguments:
-		-fname   or --fname   The name of the data file for which user would like data to be plotted
+		-fname   or --fname   The name of the data file for which user would like data to be plotted (can be hdf4 or hdf5)
 			Example -fname OMI-Aura_L2-OMTO3_2006m0513t2104-o09722_v999-2017m0201t175858.he5
 
 		-pname   or --pname   The name of the PIXCOR file that user would like data to be plotted with 
 			Example -pname OMI-Aura_L2-OMPIXCOR_2006m0921t1953-o11629_v003-2018m0228t230824.he5
 
-		-dfield  or --dfield  The datafield that the user would like plotted for given filename. User can input just datafield or datafield and full path including groups (including
-				      the full path is safer way of using in case that the datafield is in multiple groups, otherwise datafield may be taken from wrong group)
-			Example -dfield /HDFEOS/SWATHS/OMI Column Amount O3/Data Fields/Reflectivity340
+		-dfield  or --dfield  The datafield that the user would like plotted for given filename. User must give datafield and full path including groups
+			Example -dfield /HDFEOS/SWATHS/OMI\ Column\ Amount\ O3/Data\ Fields/Reflectivity340
 
 		-outfile or --outfile The name of the output file that user would like for plot with extension included 
 			Example -outfile 2006m0513_o11629_R340.jpg
